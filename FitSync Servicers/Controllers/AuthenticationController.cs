@@ -19,11 +19,13 @@ namespace FitSync_Servicers.Controllers
     public class AuthenticationController : ControllerBase
     {
         private readonly UserManager<User> userManager;
+        private readonly RoleManager<IdentityRole> roleManager;
         private readonly IConfiguration _configuration;
 
-        public AuthenticationController(UserManager<User> userManager, IConfiguration configuration)
+        public AuthenticationController(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
         {
             this.userManager = userManager;
+            this.roleManager = roleManager;
             _configuration = configuration;
         }
 
@@ -50,6 +52,16 @@ namespace FitSync_Servicers.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, new AuthResult { Status = "Error", Message = "Internal Server Error" });
             }
 
+            if (!await roleManager.RoleExistsAsync(UserRoles.User))
+                await roleManager.CreateAsync(new IdentityRole(UserRoles.User));
+
+            if (!await roleManager.RoleExistsAsync(UserRoles.Admin))
+                await roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
+
+            if(await roleManager.RoleExistsAsync(UserRoles.User)) 
+            {
+                await userManager.AddToRoleAsync(user, UserRoles.User);
+            }
             return Ok(new AuthResult { Status = "Success", Message = "User Created Sccuessfully" });
         }
 
@@ -94,5 +106,7 @@ namespace FitSync_Servicers.Controllers
 
             return Unauthorized();
         }
+
+
     }
 }
