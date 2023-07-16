@@ -10,6 +10,17 @@ using System.Threading.Tasks;
 
 namespace CheatMealLogsService.Controllers
 {
+    [Route("/")]
+    [ApiController]
+    public class HomeController : ControllerBase
+    {
+        [HttpGet]
+        public IActionResult Get()
+        {
+            return Ok("Cheat Meal log services are running. Status: Online");
+        }
+    }
+
     [Route("api/[controller]")]
     [ApiController]
     public class CheatMealLogController : ControllerBase

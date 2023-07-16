@@ -8,6 +8,17 @@ using WorkoutActivityService.Models;
 
 namespace WorkoutActivityService.Controllers
 {
+    [Route("/")]
+    [ApiController]
+    public class HomeController : ControllerBase
+    {
+        [HttpGet]
+        public IActionResult Get()
+        {
+            return Ok("Workut Activity services are running. Status: Online");
+        }
+    }
+
     [Route("api/[controller]")]
     [ApiController]
     public class WorkoutActivityController : ControllerBase

@@ -16,6 +16,17 @@ using System.Threading.Tasks;
 
 namespace FitSync_Servicers.Controllers
 {
+    [Route("/")]
+    [ApiController]
+    public class HomeController : ControllerBase
+    {
+        [HttpGet]
+        public IActionResult Get()
+        {
+            return Ok("Auth services are running. Status: Online");
+        }
+    }
+
     [Route("api/[controller]")]
     [ApiController]
     public class AuthenticationController : ControllerBase
@@ -130,7 +141,5 @@ namespace FitSync_Servicers.Controllers
 
             return Unauthorized();
         }
-
-
     }
 }
