@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WorkoutActivityService.Data;
+using Microsoft.OpenApi.Models;
 
 namespace WorkoutActivityService
 {
@@ -30,6 +31,11 @@ namespace WorkoutActivityService
             services.AddControllers();
             services.AddDbContext<WorkoutActivityDbContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "WorkoutActivity Service", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,6 +56,14 @@ namespace WorkoutActivityService
             {
                 endpoints.MapControllers();
             });
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "FitSync Workout Activity Service v1");
+            });
+
         }
     }
 }
