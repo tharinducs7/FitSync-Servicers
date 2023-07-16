@@ -1,4 +1,6 @@
 ﻿using FitSync_Servicers.Authentication;
+using FitSync_Servicers.Data;
+using FitSync_Servicers.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -20,13 +22,15 @@ namespace FitSync_Servicers.Controllers
     {
         private readonly UserManager<User> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
+        private readonly ApplicationDbContext _context;
         private readonly IConfiguration _configuration;
 
-        public AuthenticationController(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
+        public AuthenticationController(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, ApplicationDbContext context)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
             _configuration = configuration;
+            _context = context;
         }
 
         [HttpPost]
@@ -50,6 +54,25 @@ namespace FitSync_Servicers.Controllers
             if (!result.Succeeded)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, new AuthResult { Status = "Error", Message = "Internal Server Error" });
+            } else
+            {
+                UserProfile userProfile = new UserProfile()
+                {
+                    UserId = user.Id,
+                    Name = registration.Name,
+                    Email = registration.Email,
+                    DateOfBirth = registration.DateOfBirth,
+                    Telephone = registration.Telephone,
+                    Weight = registration.Weight,
+                    Height = registration.Height,
+                    BloodType = registration.BloodType,
+                    Gender = registration.Gender,
+                    DailyCalorieGoal = registration.DailyCalorieGoal,
+                    DailyExerciseGoal = registration.DailyExerciseGoal,
+                };
+
+                _context.userProfile.Add(userProfile);
+                var resultUserProfile = await _context.SaveChangesAsync();
             }
 
             if (!await roleManager.RoleExistsAsync(UserRoles.User))

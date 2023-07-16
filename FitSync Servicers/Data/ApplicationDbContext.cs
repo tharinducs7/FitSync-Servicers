@@ -1,4 +1,5 @@
 ﻿using FitSync_Servicers.Authentication;
+using FitSync_Servicers.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,6 +11,8 @@ namespace FitSync_Servicers.Data
 {
     public class ApplicationDbContext : IdentityDbContext<User>
     {
+        public DbSet<UserProfile> userProfile { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options)
         {
 
