@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkoutActivityService", "W
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheatMealLogsService", "CheatMealLogsService\CheatMealLogsService.csproj", "{DD6B4D1F-485C-4BCD-BD2C-AB06796BA418}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitSyncAPIGateway", "FitSyncAPIGateway\FitSyncAPIGateway.csproj", "{32FE8C97-5736-49A1-B77E-198A1B3FCA0E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{DD6B4D1F-485C-4BCD-BD2C-AB06796BA418}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD6B4D1F-485C-4BCD-BD2C-AB06796BA418}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DD6B4D1F-485C-4BCD-BD2C-AB06796BA418}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32FE8C97-5736-49A1-B77E-198A1B3FCA0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32FE8C97-5736-49A1-B77E-198A1B3FCA0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32FE8C97-5736-49A1-B77E-198A1B3FCA0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32FE8C97-5736-49A1-B77E-198A1B3FCA0E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
