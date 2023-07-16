@@ -123,7 +123,8 @@ namespace FitSync_Servicers.Controllers
                 {
                     token = new JwtSecurityTokenHandler().WriteToken(token),
                     expiration = token.ValidTo,
-                    User = user.UserName
+                    User = user.UserName,
+                    Id = user.Id
                 });
             }
 
