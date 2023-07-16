@@ -5,6 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20230716032507_cheatmeals.cs" />
+    <Compile Remove="Migrations\20230716032507_cheatmeals.Designer.cs" />
+    <Compile Remove="Migrations\20230716032941_DropTable.cs" />
+    <Compile Remove="Migrations\20230716032941_DropTable.Designer.cs" />
+    <Compile Remove="Migrations\20230716033006_cheatmealss.cs" />
+    <Compile Remove="Migrations\20230716033006_cheatmealss.Designer.cs" />
+    <Compile Remove="Migrations\20230716033113_cheatmealss.cs" />
+    <Compile Remove="Migrations\20230716033113_cheatmealss.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.32" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.32" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.32">

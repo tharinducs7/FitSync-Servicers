@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WorkoutActivityService.Migrations
 {
-    public partial class Initial : Migration
+    public partial class workoutactivities : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,7 +13,7 @@ namespace WorkoutActivityService.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(nullable: false),
+                    UserId = table.Column<string>(nullable: true),
                     WorkoutType = table.Column<string>(nullable: false),
                     DurationInMinutes = table.Column<int>(nullable: false),
                     CaloriesBurnedPerMinute = table.Column<double>(nullable: false),

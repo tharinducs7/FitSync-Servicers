@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WorkoutActivityService.Data;
 
 namespace WorkoutActivityService.Migrations
 {
     [DbContext(typeof(WorkoutActivityDbContext))]
-    partial class WorkoutActivityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230716034143_workoutactivities")]
+    partial class workoutactivities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

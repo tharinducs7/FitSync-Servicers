@@ -12,7 +12,6 @@ namespace WorkoutActivityService.Controllers
     [ApiController]
     public class WorkoutActivityController : ControllerBase
     {
-       // private static List<WorkoutActivity> workoutActivities = new List<WorkoutActivity>();
         private readonly WorkoutActivityDbContext _context;
 
         public WorkoutActivityController(WorkoutActivityDbContext context)
