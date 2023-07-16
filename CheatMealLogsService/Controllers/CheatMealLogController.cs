@@ -58,7 +58,10 @@ namespace CheatMealLogsService.Controllers
 
             return CreatedAtAction(nameof(Get), new { id = cheatMeal.Id }, cheatMeal);
         }
+
+
         // PUT api/<CheatMealLogController>/5
+        [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, [FromBody] CheatMealLog updatedCheatMeal)
         {
             var cheatMealLog = await _context.CheatMealLogs.FindAsync(id);
