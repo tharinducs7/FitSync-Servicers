@@ -1,5 +1,6 @@
 ﻿using CheatMealLogsService.Data;
 using CheatMealLogsService.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,7 @@ namespace CheatMealLogsService.Controllers
         }
     }
 
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CheatMealLogController : ControllerBase
