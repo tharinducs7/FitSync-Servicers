@@ -20,7 +20,7 @@ namespace WorkoutActivityService.Controllers
         }
     }
 
-    [Authorize]
+   // [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class WorkoutActivityController : ControllerBase

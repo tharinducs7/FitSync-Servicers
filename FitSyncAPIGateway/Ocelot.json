@@ -42,7 +42,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 44376
+          "Port": 44304
         }
       ],
       "UpstreamPathTemplate": "/apigateway/CheatMealLog",

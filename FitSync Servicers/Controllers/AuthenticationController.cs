@@ -4,6 +4,7 @@ using FitSync_Servicers.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -48,7 +49,7 @@ namespace FitSync_Servicers.Controllers
         [Route("Signup")]
         public async Task<IActionResult> Signup([FromBody] Registration registration)
         {
-            var userExist = await userManager.FindByNameAsync(registration.UserName);
+            var userExist = await userManager.FindByEmailAsync(registration.Email);
 
             if (userExist != null)
                 return StatusCode(StatusCodes.Status400BadRequest, new AuthResult { Status = "Error", Message = "User Already Exists!" });
@@ -65,25 +66,6 @@ namespace FitSync_Servicers.Controllers
             if (!result.Succeeded)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, new AuthResult { Status = "Error", Message = "Internal Server Error" });
-            } else
-            {
-                UserProfile userProfile = new UserProfile()
-                {
-                    UserId = user.Id,
-                    Name = registration.Name,
-                    Email = registration.Email,
-                    DateOfBirth = registration.DateOfBirth,
-                    Telephone = registration.Telephone,
-                    Weight = registration.Weight,
-                    Height = registration.Height,
-                    BloodType = registration.BloodType,
-                    Gender = registration.Gender,
-                    DailyCalorieGoal = registration.DailyCalorieGoal,
-                    DailyExerciseGoal = registration.DailyExerciseGoal,
-                };
-
-                _context.userProfile.Add(userProfile);
-                var resultUserProfile = await _context.SaveChangesAsync();
             }
 
             if (!await roleManager.RoleExistsAsync(UserRoles.User))
@@ -92,12 +74,54 @@ namespace FitSync_Servicers.Controllers
             if (!await roleManager.RoleExistsAsync(UserRoles.Admin))
                 await roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
 
-            if(await roleManager.RoleExistsAsync(UserRoles.User)) 
+            if (await roleManager.RoleExistsAsync(UserRoles.User))
             {
                 await userManager.AddToRoleAsync(user, UserRoles.User);
             }
-            return Ok(new AuthResult { Status = "Success", Message = "User Created Sccuessfully" });
+
+            var authClaims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(ClaimTypes.Role, UserRoles.User) // Assuming all registered users have the "User" role
+            };
+
+            var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
+
+            var token = new JwtSecurityToken(
+                issuer: _configuration["JWT:ValidIssuer"],
+                audience: _configuration["JWT:ValidAudience"],
+                expires: DateTime.Now.AddHours(3),
+                claims: authClaims,
+                signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
+            );
+
+            UserProfile userProfile = new UserProfile()
+            {
+                UserId = user.Id,
+                Name = registration.Name,
+                Email = registration.Email,
+                DateOfBirth = registration.DateOfBirth,
+                Telephone = registration.Telephone,
+                Weight = registration.Weight,
+                Height = registration.Height,
+                BloodType = registration.BloodType,
+                Gender = registration.Gender,
+                DailyCalorieGoal = registration.DailyCalorieGoal,
+                DailyExerciseGoal = registration.DailyExerciseGoal,
+            };
+
+            _context.userProfile.Add(userProfile);
+            await _context.SaveChangesAsync();
+
+            return Ok(new
+            {
+                Token = new JwtSecurityTokenHandler().WriteToken(token),
+                Expiration = token.ValidTo,
+                UserProfile = userProfile // Return the user profile data
+            });
         }
+
 
         [HttpPost]
         [Route("Signin")]
@@ -130,12 +154,13 @@ namespace FitSync_Servicers.Controllers
                     signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
                    );
 
+                var userProfile = await _context.userProfile.SingleOrDefaultAsync(x => x.UserId == user.Id);
+
                 return Ok(new
                 {
-                    token = new JwtSecurityTokenHandler().WriteToken(token),
-                    expiration = token.ValidTo,
-                    User = user.UserName,
-                    Id = user.Id
+                    Token = new JwtSecurityTokenHandler().WriteToken(token),
+                    Expiration = token.ValidTo,
+                    UserProfile = userProfile
                 });
             }
 
