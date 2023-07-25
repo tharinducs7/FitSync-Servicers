@@ -21,7 +21,7 @@ namespace CheatMealLogsService.Controllers
         }
     }
 
-    //[Authorize]
+  
     [Route("api/[controller]")]
     [ApiController]
     public class CheatMealLogController : ControllerBase
@@ -41,6 +41,7 @@ namespace CheatMealLogsService.Controllers
 
         // GET api/<CheatMealLogController>/user
         [HttpGet("user")]
+        [AllowAnonymous]
         public IEnumerable<CheatMealLog> GetByUserId([FromHeader] string userId)
         {
             return _context.CheatMealLogs.Where(logs => logs.UserId == userId).ToList();
